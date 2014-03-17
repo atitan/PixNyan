@@ -21,5 +21,8 @@ module Pixnyan
     # config.i18n.default_locale = :de
 
     config.time_zone = 'Taipei'
+
+    config.encoding = "utf-8"
+    config.i18n.default_locale = "zh-TW".to_sym
   end
 end

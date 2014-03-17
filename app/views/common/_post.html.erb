@@ -1,4 +1,4 @@
-<input type="checkbox" name="<%= post.id %>" value="delete" />
+<input type="checkbox" name="del_post[]" value="<%= post.id %>" />
 <span class="title"><%= post.title %></span>
 名稱: <span class="name"><%= author_meta(post) %></span>&nbsp;
 [<%= post.created_at.strftime('%y/%m/%d %a %H:%M') %> ID:<%= post.identity_hash %>]&nbsp;

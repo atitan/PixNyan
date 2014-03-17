@@ -21,8 +21,15 @@ class PostsController < ApplicationController
   end
 
   def destory
-    @post = Post.find_by_id(params[:id])
-
+    params[:del_post].each do |pid|
+      @post = Post.find_by_id(params[:id])
+      unless @post.nil?
+        if params[:password] == @post.delete_password
+          @post.destory
+        end
+      end
+    end
+    
     redirect_to stream_index_path
   end
 
