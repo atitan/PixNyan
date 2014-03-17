@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Cache-Control" content="max-age=0; must-revalidate" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="zh-tw" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+  <% #<title>{$TITLE}</title> %>
+  <link rel="stylesheet" type="text/css" href="/assets/mainstyle.css" />
+  <script type="text/javascript" src="/assets/mainscript.js"></script>
+  <!--[if lt IE 8]><script type="text/javascript" src="/assets/iedivfix.js"></script><![endif]-->
+  <title>PixNyan</title>
+  <% stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <% javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div id="header" align="center">
+    <div id="toplink">
+      {$HOME} {$SEARCH} {$HOOKLINKS} {$TOP_LINKS} {$STATUS} {$ADMIN} {$REFRESH}
+    </div>
+    <br />
+    <h1>PixNyan</h1>
+    <hr class="top" />
+  </div>
+
+<%= yield %>
+
+<div id="footer">
+<small>- <a href="http://php.s3.to" rel="_top">GazouBBS</a> + <a href="http://www.2chan.net/" rel="_top">futaba</a> + <a href="http://pixmicat.openfoundry.org/" rel="_blank">Pixmicat!</a> + <a href="//rubyonrails.org" rel="_blank">Ruby on Rails</a> -</small>
+<script type="text/javascript">preset();</script>
+</div>
+
+</body>
+</html>

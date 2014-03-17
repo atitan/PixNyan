@@ -1,0 +1,12 @@
+<input type="checkbox" name="<%= post.id %>" value="delete" />
+<span class="title"><%= post.title %></span>
+名稱: <span class="name"><%= author_meta(post) %></span>&nbsp;
+[<%= post.created_at.strftime('%y/%m/%d %a %H:%M') %> ID:<%= post.identity_hash %>]&nbsp;
+<%= postid_link(post) %><br />
+<% unless post.image.blank? %>
+  <%= link_to( image_tag(post.image.url(:thumb), class: "img"), post.image.url, rel: "_blank" ) %>
+  檔名：<%= link_to( post.image_file_name, post.image.url, rel: "_blank" ) %>
+  -(<%= number_to_human_size post.image_file_size %>, <%= post.image_dimensions[0] %>x<%= post.image_dimensions[1] %>)&nbsp;
+  <small>[以預覽圖顯示]</small>
+<% end %>
+<div class="quote"><%= simple_format post.message %></div>

@@ -1,0 +1,14 @@
+<%= render 'common/form', { post: @reply } %>
+
+<div id="contents">
+{$THREADFRONT}
+<form action="{$SELF}" method="post">
+<div id="threads" class="autopagerize_page_element">
+  <%= render 'common/thread', { thread: @thread } %>
+</div>
+{$THREADREAR}
+  <%= render 'common/del_form' %>
+<script type="text/javascript">l2();</script>
+</form>
+
+</div>

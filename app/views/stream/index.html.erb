@@ -1,0 +1,18 @@
+<%= render 'common/form', { post: Post.new }%>
+
+<div id="contents">
+{$THREADFRONT}
+<form action="{$SELF}" method="post">
+<div id="threads" class="autopagerize_page_element">
+  <% @threads.each do |thread| %>
+    <%= render 'common/thread', { thread: thread } %>
+  <% end %>
+</div>
+{$THREADREAR}
+  <%= render 'common/del_form' %>
+<script type="text/javascript">l2();</script>
+</form>
+
+<%= paginate @threads %>
+
+</div>
