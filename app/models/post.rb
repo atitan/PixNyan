@@ -1,9 +1,12 @@
 class Post < ActiveRecord::Base
 
   # Image Attachment
-  has_attached_file :image, :styles => { :thumb => "250x250>" }
-  validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
-  validates_attachment_size :image, in: 0..5.megabytes
+  has_attached_file :image, {
+    styles: { thumb: ["250x250>", :jpg] },
+    convert_options: { thumb: "-quality 80 -interlace Plane" }
+  }
+  validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
+  validates_attachment_size :image, in: 0..MAX_IMAGE_KB_SIZE.kilobytes
   serialize :image_dimensions
 
   has_many :replies, class_name: "Post",
@@ -20,24 +23,29 @@ class Post < ActiveRecord::Base
   before_save :extract_image_dimensions
 
   # validates data
-  validate :message, length: { maximum: 5000 }
-  validate :title, length: { maximum: 200 }
-  validate :author, length: { maximum: 200 }
-  validate :email, length: { maximum: 200 }
-  validate :delete_password, length: { maximum: 32 }
+  validates :message, length: { maximum: MAX_POST_MESSAGE_WORDCOUNT }
+  validates :title, length: { maximum: 200 }
+  validates :author, length: { maximum: 200 }
+  validates :email, length: { maximum: 200 }
+  validates :delete_password, length: { maximum: 8 }
   validate :content_presence
 
   # threads
   scope :threads, -> { where(parent_post_id: nil) }
   scope :recent, -> { order(updated_at: :desc) }
+  scope :whole_thread, ->(id) { where(id: id).or_where(parent_post_id: id) }
 
   # getters
   def title
-    self[:title] || "無標題"
+    self[:title] || DEFAULT_POST_TITLE
   end
 
   def author
-    self[:author] || "無名氏"
+    self[:author] || DEFAULT_POST_AUTHOR
+  end
+
+  def message
+    self[:message] || DEFAULT_POST_MESSAGE
   end
   
   protected

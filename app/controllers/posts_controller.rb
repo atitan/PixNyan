@@ -17,14 +17,14 @@ class PostsController < ApplicationController
     @post.save
 
     id = @post.parent_post.nil? ? @post.id : @post.parent_post.id
-    redirect_to thread_path(id: id)
+    redirect_to stream_index_path
   end
 
   def destory
     params[:del_post].each do |pid|
-      @post = Post.find_by_id(params[:id])
+      @post = Post.find_by(id: params[:id])
       unless @post.nil?
-        if params[:password] == @post.delete_password
+        if params[:pwd] == @post.delete_password
           @post.destory
         end
       end

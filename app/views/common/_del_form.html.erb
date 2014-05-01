@@ -1,8 +1,10 @@
 <div id="del">
 <table style="float: right;">
 <tr><td align="center" style="white-space: nowrap;">
-【刪除文章】[<input type="checkbox" name="onlyimgdel" id="onlyimgdel" value="on" /><label for="onlyimgdel">僅刪除附加圖檔</label>]<br />
-刪除用密碼: <input type="password" name="pwd" size="8" value="" /><input type="submit" value=" 執行 " />
+【刪除文章】[<%= check_box_tag "only_delete_img" %>
+<label for="only_delete_img">僅刪除附加圖檔</label>]<br />
+刪除用密碼: <%= password_field_tag 'pwd', nil, size: 8 %>
+<%= submit_tag " 執行 " %>
 </td></tr>
 </table>
 </div>

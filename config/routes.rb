@@ -11,10 +11,13 @@ Pixnyan::Application.routes.draw do
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
   resources :stream, only: :index do
-    get ':page', :action => :index, :on => :collection
+    get ':page', action: :index, on: :collection
   end
-  resources :thread, only: :show
-  resources :posts, only: [:create, :destroy]
+  resources :thread, only: :show do
+    get ':id/:page', action: :show, on: :collection
+  end
+  resources :posts, only: [:create]
+  delete '/posts', to: 'posts#destroy', as: :post
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   # resources :post

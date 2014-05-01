@@ -1,15 +1,7 @@
-<div class="threadpost" id="r<%= thread.id %>">
 <%= render 'common/parent_post', { post: thread } %>
-</div>
 
 <% thread.replies.each do |reply| %>
-
-<div class="reply" id="r<%= reply.id %>">
-  <div class="replywrap">
-    <%= render 'common/post', { post: reply } %>
-  </div>
-</div>
-
+  <%= render 'common/post', { post: reply } %>
 <% end %>
 
 <hr />

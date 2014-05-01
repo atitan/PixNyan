@@ -1,15 +1,13 @@
-<%= render 'common/form', { post: @reply } %>
+<%= render 'common/post_form', { post: @reply_form } %>
 
 <div id="contents">
 {$THREADFRONT}
-<%= simple_form_for Post.new,
-        method: :delete,
-        defaults: {label: false, wrapper: false} do |f| %>
-  <div id="threads" class="autopagerize_page_element">
-    <%= render 'common/thread', { thread: @thread } %>
-  </div>
+<%= form_tag post_path, method: :delete do %>
+
+  <%= render 'thread', { thread: @thread, page: @page } %>
   {$THREADREAR}
   <%= render 'common/del_form' %>
+
 <% end %>
 <script type="text/javascript">l2();</script>
 

@@ -1,7 +1,7 @@
 class StreamController < ApplicationController
 
   def index
-    @threads = Post.threads.page(params[:page]).per(10).recent
+    @threads = Post.threads.page(params[:page]).per(THREAD_PER_STREAM_PAGE).recent
 
     if @threads.blank?
       raise ActionController::RoutingError.new('Not Found')

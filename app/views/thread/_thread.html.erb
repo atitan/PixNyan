@@ -1,0 +1,12 @@
+<div id="threads" class="autopagerize_page_element">
+    
+<% unless page.to_i > 1 %>
+  <%= render 'common/parent_post', { post: thread } %>
+<% end %>
+
+<% thread.replies.page(page).per(REPLY_PER_THREAD_PAGE).each do |reply| %>
+  <%= render 'common/post', { post: reply } %>
+<% end %>
+
+<hr />
+</div>

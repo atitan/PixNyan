@@ -1,4 +1,7 @@
-<input type="checkbox" name="del_post[]" value="<%= post.id %>" />
+<div class="reply" id="r<%= post.id %>">
+  <div class="replywrap">
+
+<%= check_box_tag "del_post[#{post.id}]", post.id %>
 <span class="title"><%= post.title %></span>
 名稱: <span class="name"><%= author_meta(post) %></span>&nbsp;
 [<%= post.created_at.strftime('%y/%m/%d %a %H:%M') %> ID:<%= post.identity_hash %>]&nbsp;
@@ -9,4 +12,7 @@
   -(<%= number_to_human_size post.image_file_size %>, <%= post.image_dimensions[0] %>x<%= post.image_dimensions[1] %>)&nbsp;
   <small>[以預覽圖顯示]</small>
 <% end %>
-<div class="quote"><%= simple_format post.message %></div>
+<div class="quote"><%= text_parser post.message %></div>
+
+  </div>
+</div>
