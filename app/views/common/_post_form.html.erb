@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <td class="Form_bg"><b>刪除用密碼</b></td>
-      <td><%= f.input :delete_password %><small>(刪除文章用。英數字8字元以內)</small></td>
+      <td><%= f.input :delete_password %><small>(刪除文章用。)</small></td>
     </tr>
     <%= f.input :parent_post_id, as: :hidden %>
     <tr>
@@ -34,7 +34,7 @@
         <div id="postinfo">
         <ul>
           <li>瀏覽器可正常附加圖檔類型：GIF, JPG, PNG</li>
-          <li>附加圖檔最大上傳資料量為： 1500 KB</li>
+          <li>附加圖檔最大上傳資料量為： <%= MAX_IMAGE_KB_SIZE %> KB</li>
         </ul>
         <noscript><div>＊您選擇關閉了JavaScript，但這對您的瀏覽及發文應無巨大影響</div></noscript>
         </div>

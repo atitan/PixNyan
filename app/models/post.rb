@@ -5,7 +5,7 @@ class Post < ActiveRecord::Base
     styles: { thumb: ["250x250>", :jpg] },
     convert_options: { thumb: "-quality 80 -interlace Plane" }
   }
-  validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
+  validates_attachment_content_type :image, content_type: /\Aimage\/(png|gif|jpeg|pjpeg)\z/
   validates_attachment_size :image, in: 0..MAX_IMAGE_KB_SIZE.kilobytes
   serialize :image_dimensions
 
