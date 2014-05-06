@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20140310102800) do
     t.string   "real_ip",                            null: false
     t.string   "remote_ip",                          null: false
     t.string   "identity_hash",                      null: false
-    t.text     "message",                            null: false
+    t.text     "message"
     t.string   "image_dimensions"
     t.string   "delete_password"
     t.boolean  "locked",             default: false

@@ -15,7 +15,7 @@ class Post < ActiveRecord::Base
     foreign_key: "parent_post_id"
 
   # convert empty string to nil
-  NULL_ATTRS = %w( title author email delete_password )
+  NULL_ATTRS = %w( title author email message )
   before_validation :nil_if_blank
   # inform the parent about the child
   before_save :touch_parent
@@ -27,14 +27,12 @@ class Post < ActiveRecord::Base
   validates :title, length: { maximum: 200 }
   validates :author, length: { maximum: 200 }
   validates :email, length: { maximum: 200 }
-  validates :delete_password, length: { maximum: 8 }
   validate :content_presence
 
   # threads
   scope :threads, -> { where(parent_post_id: nil) }
   scope :recent, -> { order(updated_at: :desc) }
-  scope :whole_thread, ->(id) { where(id: id).or_where(parent_post_id: id) }
-
+  
   # getters
   def title
     self[:title] || DEFAULT_POST_TITLE
@@ -47,6 +45,11 @@ class Post < ActiveRecord::Base
   def message
     self[:message] || DEFAULT_POST_MESSAGE
   end
+
+  # generating hash for password
+  def delete_password=(passwd)
+    self[:delete_password] = Digest::SHA1.base64digest(passwd)
+  end
   
   protected
 
@@ -56,7 +59,7 @@ class Post < ActiveRecord::Base
 
   def touch_parent
     # touch parent if sage presents on create
-    parent_post.touch if parent_post && new_record? && "sage".casecmp(email.to_s) != 0
+    parent_post.touch if parent_post && new_record? && "sage".casecmp(self[:email].to_s) != 0
   end
 
   def avoid_locked_record

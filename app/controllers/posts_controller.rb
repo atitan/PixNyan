@@ -20,12 +20,18 @@ class PostsController < ApplicationController
     redirect_to stream_index_path
   end
 
-  def destory
-    params[:del_post].each do |pid|
-      @post = Post.find_by(id: params[:id])
-      unless @post.nil?
-        if params[:pwd] == @post.delete_password
-          @post.destory
+  def destroy
+    if params[:del_post] 
+      params[:del_post].each do |pid, k|
+        post = Post.find(pid.to_i)
+
+        # both data are string, so == should be safe for comparison
+        if Digest::SHA1.base64digest(params[:pwd]) == post.delete_password
+          if params[:only_delete_img]
+            post.image.destroy
+          else
+            post.destroy
+          end
         end
       end
     end
@@ -51,7 +57,6 @@ class PostsController < ApplicationController
   def id_hash
     ip = request.env['REMOTE_ADDR']
     date = Time.current.to_date.to_s
-
     hash = Digest::SHA1.base64digest(ip + date)
     
     return hash[0...8]
