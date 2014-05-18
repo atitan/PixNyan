@@ -16,7 +16,7 @@ class PostsController < ApplicationController
 
     @post.save
 
-    id = @post.parent_post.nil? ? @post.id : @post.parent_post.id
+    #id = @post.parent_post.nil? ? @post.id : @post.parent_post.id
     redirect_to stream_index_path
   end
 
@@ -57,7 +57,7 @@ class PostsController < ApplicationController
   def id_hash
     ip = request.env['REMOTE_ADDR']
     date = Time.current.to_date.to_s
-    hash = Digest::SHA1.base64digest(ip + date)
+    hash = Digest::SHA1.base64digest(ip + date + ID_SALT)
     
     return hash[0...8]
   end
