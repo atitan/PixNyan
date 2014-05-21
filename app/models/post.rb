@@ -1,14 +1,21 @@
 class Post < ActiveRecord::Base
 
-  # Image Attachment
+  # image Attachment
   has_attached_file :image, {
-    styles: { thumb: ["250x250>", :jpg], small: ["125x125>", :jpg] },
-    convert_options: { thumb: "-quality 80 -interlace Plane", small: "-quality 80 -interlace Plane" }
+    styles: { small: ["125x125>", :jpg], medium: ["250x250>", :jpg], full: "" },
+    convert_options: { 
+      small: "-quality 80 -interlace Plane -strip",
+      medium: "-quality 80 -interlace Plane -strip",
+      full: "-strip"
+    }
   }
   validates_attachment_content_type :image, content_type: /\Aimage\/(png|gif|jpeg|pjpeg)\z/
   validates_attachment_size :image, in: 0..MAX_IMAGE_KB_SIZE.kilobytes
   serialize :image_dimensions
+  before_save :extract_image_dimensions
+  after_save :destroy_original_image
 
+  # association
   has_many :replies, class_name: "Post",
     foreign_key: "parent_post_id", dependent: :destroy
   belongs_to :parent_post, class_name: "Post",
@@ -16,12 +23,12 @@ class Post < ActiveRecord::Base
 
   # convert empty string to nil
   NULL_ATTRS = %w( title author email message )
-  before_validation :nil_if_blank
-  # inform the parent about the child
-  before_save :touch_parent
-  before_save :avoid_locked_record
-  before_save :extract_image_dimensions
+  before_validation :nullify_blank_value
 
+  # checks before saving
+  before_save :touch_parent
+  before_save :avoid_locked_record 
+  
   # validates data
   validates :message, length: { maximum: MAX_POST_MESSAGE_WORDCOUNT }
   validates :title, length: { maximum: 200 }
@@ -53,12 +60,12 @@ class Post < ActiveRecord::Base
   
   protected
 
-  def nil_if_blank
+  def nullify_blank_value
     NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
   end
 
   def touch_parent
-    # touch parent if sage presents on create
+    # touch parent on create if sage presents in email field
     parent_post.touch if parent_post && new_record? && "sage".casecmp(self[:email].to_s) != 0
   end
 
@@ -81,6 +88,10 @@ class Post < ActiveRecord::Base
       geometry = Paperclip::Geometry.from_file(tempfile)
       self[:image_dimensions] = [geometry.width.to_i, geometry.height.to_i]
     end
+  end
+
+  def destroy_original_image
+    File.unlink(self.image.path)
   end
 
 end
