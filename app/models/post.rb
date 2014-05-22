@@ -2,18 +2,17 @@ class Post < ActiveRecord::Base
 
   # image Attachment
   has_attached_file :image, {
-    styles: { small: ["125x125>", :jpg], medium: ["250x250>", :jpg], full: "" },
+    styles: { small: ["125x125>", :jpg], medium: ["250x250>", :jpg], original: "" },
     convert_options: { 
       small: "-quality 80 -interlace Plane -strip",
       medium: "-quality 80 -interlace Plane -strip",
-      full: "-strip"
+      original: "-strip"
     }
   }
   validates_attachment_content_type :image, content_type: /\Aimage\/(png|gif|jpeg|pjpeg)\z/
   validates_attachment_size :image, in: 0..MAX_IMAGE_KB_SIZE.kilobytes
   serialize :image_dimensions
   before_save :extract_image_dimensions
-  after_save :destroy_original_image
 
   # association
   has_many :replies, class_name: "Post",
@@ -88,10 +87,6 @@ class Post < ActiveRecord::Base
       geometry = Paperclip::Geometry.from_file(tempfile)
       self[:image_dimensions] = [geometry.width.to_i, geometry.height.to_i]
     end
-  end
-
-  def destroy_original_image
-    File.unlink(self.image.path)
   end
 
 end

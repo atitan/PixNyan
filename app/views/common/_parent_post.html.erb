@@ -1,10 +1,10 @@
 <div class="threadpost" id="r<%= post.id %>">
 
 <% unless post.image.blank? %>
-  檔名：<%= link_to( post.image_file_name, post.image.url(:full), rel: "_blank" ) %>
+  檔名：<%= link_to( post.image_file_name, post.image.url, rel: "_blank" ) %>
   -(<%= number_to_human_size post.image_file_size %>, <%= post.image_dimensions[0] %>x<%= post.image_dimensions[1] %>)&nbsp;
   <small>[以預覽圖顯示]</small><br />
-  <%= link_to( image_tag(post.image.url(:medium), class: "img"), post.image.url(:full), rel: "_blank" ) %>
+  <%= link_to( image_tag(post.image.url(:medium), class: "img"), post.image.url, rel: "_blank" ) %>
 <% end %>
 <%= check_box_tag "del_post[#{post.id}]", post.id %>
 <span class="title"><%= post.title %></span>
