@@ -47,6 +47,7 @@ group :test, :development do
 end
 
 group :production do
+  gem 'mysql2'
   gem 'unicorn'
   gem 'unicorn-worker-killer'
 end
