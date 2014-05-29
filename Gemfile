@@ -35,6 +35,8 @@ gem "simple_form"
 # File Attachment
 gem "paperclip", "~> 4.1"
 
+gem 'figaro'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

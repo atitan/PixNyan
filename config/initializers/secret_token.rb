@@ -9,8 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Pixnyan::Application.config.secret_key_base = if Rails.env.development? || Rails.env.test?
-  '95b8bb05ff0a59359de154ed980625e5909982cddec748da0f3b48b3f16bc4fdf118303969c655263ef01ca0e157e135c74b6a92427694a1e7743e2b9c3f182a'
-else
-  ENV['SECRET_TOKEN']
-end
+Pixnyan::Application.config.secret_key_base = ENV['SECRET_TOKEN']

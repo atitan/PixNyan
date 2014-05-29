@@ -54,7 +54,7 @@ class Post < ActiveRecord::Base
 
   # generating hash for password
   def delete_password=(passwd)
-    self[:delete_password] = Digest::SHA1.base64digest(passwd)
+    self[:delete_password] = if passwd.blank? then nil else Digest::SHA1.base64digest(passwd) end
   end
   
   protected

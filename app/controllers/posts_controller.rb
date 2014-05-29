@@ -25,10 +25,9 @@ class PostsController < ApplicationController
       params[:del_post].each do |pid, k|
         post = Post.find(pid.to_i)
 
-        # both data are string, so == should be safe for comparison
-        if Digest::SHA1.base64digest(params[:pwd]) == post.delete_password
+        if Digest::SHA1.base64digest(params[:pwd]) === post.delete_password
           if params[:only_delete_img]
-            post.image.destroy
+            post.image = nil && post.save
           else
             post.destroy
           end
