@@ -25,8 +25,9 @@ class Post < ActiveRecord::Base
   before_validation :nullify_blank_value
 
   # checks before saving
+  before_save :avoid_locked_record
+  before_save :generate_id_hash
   before_save :touch_parent
-  before_save :avoid_locked_record 
   
   # validates data
   validates :message, length: { maximum: MAX_POST_MESSAGE_WORDCOUNT }
@@ -66,6 +67,14 @@ class Post < ActiveRecord::Base
   def touch_parent
     # touch parent on create if sage presents in email field
     parent_post.touch if parent_post && new_record? && "sage".casecmp(self[:email].to_s) != 0
+  end
+
+  def generate_id_hash
+    ip = self[:real_ip]
+    date = Time.current.to_date.to_s
+    hash = Digest::SHA1.base64digest(ip + date + ID_SALT)
+    
+    self[:identity_hash] = hash[0..8]
   end
 
   def avoid_locked_record

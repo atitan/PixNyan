@@ -1,19 +1,18 @@
 class PostsController < ApplicationController
 
   def create
-    @thread = Post.threads.find_by_id(params[:post][:parent_post_id])
+    @thread = Post.threads.find_by(id: params[:post][:parent_post_id])
 
     # check if parent post
-    unless @thread.nil?
-      @post = @thread.replies.new(post_params)
-    else
+    if @thread.nil?
       @post = Post.new(post_params)
+    else
+      @post = @thread.replies.new(post_params)
     end
 
     @post.real_ip = request.env['REMOTE_ADDR']
     @post.remote_ip = request.remote_ip
-    @post.identity_hash = id_hash
-
+    
     @post.save
 
     #id = @post.parent_post.nil? ? @post.id : @post.parent_post.id
@@ -21,16 +20,16 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    if params[:del_post] 
+    if params[:del_post]
       params[:del_post].each do |pid, k|
-        post = Post.find(pid.to_i)
+        post = Post.find_by(id: pid.to_i)
+        next if post.nil?
+        next unless Digest::SHA1.base64digest(params[:pwd]).eql?(post.delete_password)
 
-        if Digest::SHA1.base64digest(params[:pwd]) === post.delete_password
-          if params[:only_delete_img]
-            post.image = nil && post.save
-          else
-            post.destroy
-          end
+        if params[:only_delete_img]
+          post.image = nil && post.save
+        else
+          post.destroy
         end
       end
     end
@@ -52,13 +51,4 @@ class PostsController < ApplicationController
         :delete_password
     )
   end
-
-  def id_hash
-    ip = request.env['REMOTE_ADDR']
-    date = Time.current.to_date.to_s
-    hash = Digest::SHA1.base64digest(ip + date + ID_SALT)
-    
-    return hash[0...8]
-  end
-
 end
