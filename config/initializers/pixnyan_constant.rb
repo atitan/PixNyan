@@ -14,7 +14,7 @@ MAX_POST_MESSAGE_WORDCOUNT = 5000
 # Content display
 THREAD_PER_STREAM_PAGE = 10 # threads displayed on a stream page
 REPLY_PER_THREAD_IN_STREAM = 10 # replies displayed in a thread that's on a stream page
-REPLY_PER_THREAD_PAGE = 2 # replies displayed in a thread page
+REPLY_PER_THREAD_PAGE = 3 # replies displayed in a thread page
 
 # ID salt
 ID_SALT = "some random text"

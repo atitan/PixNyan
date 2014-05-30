@@ -4,11 +4,13 @@
 {$THREADFRONT}
 <%= form_tag post_path, method: :delete do %>
 
-  <%= render 'thread', { thread: @thread, page: @page } %>
+  <%= render 'thread', { thread: @thread, replies: @replies } %>
   {$THREADREAR}
   <%= render 'common/del_form' %>
 
 <% end %>
 <script type="text/javascript">l2();</script>
+
+<%= paginate @replies %>
 
 </div>

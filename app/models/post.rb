@@ -82,9 +82,7 @@ class Post < ActiveRecord::Base
   end
 
   def content_presence
-    if message.blank? && image.blank?
-      return false
-    end
+    return false if message.blank? && image.blank?
     return true
   end
 
