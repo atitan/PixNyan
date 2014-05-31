@@ -1,13 +1,13 @@
 class PostsController < ApplicationController
 
   def create
-    @thread = Post.threads.find_by(id: params[:post][:parent_post_id])
+    return redirect_to request.referer || stream_index_path unless verify_recaptcha
 
     # check if parent post
-    if @thread.nil?
-      @post = Post.new(post_params)
-    else
+    if @thread = Post.threads.find_by(id: params[:post][:parent_post_id])
       @post = @thread.replies.new(post_params)
+    else
+      @post = Post.new(post_params)
     end
 
     @post.real_ip = request.env['REMOTE_ADDR']
@@ -21,16 +21,14 @@ class PostsController < ApplicationController
 
   def destroy
     if params[:del_post]
-      params[:del_post].each do |pid, k|
-        post = Post.find_by(id: pid.to_i)
-        next if post.nil?
-        next unless Digest::SHA1.base64digest(params[:pwd]).eql?(post.delete_password)
+      passwd_hash = Digest::SHA1.base64digest(params[:pwd])
+      del_post = params[:del_post].split(',')
 
-        if params[:only_delete_img]
-          post.image = nil && post.save
-        else
-          post.destroy
-        end
+      posts = Post.where(id: del_post).where(delete_password: passwd_hash)
+      if params[:only_delete_img]
+        posts.each{ |post| post.image = nil && post.save }
+      else
+        posts.destroy_all
       end
     end
     

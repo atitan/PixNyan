@@ -6,7 +6,7 @@
   <small>[以預覽圖顯示]</small><br />
   <%= link_to( image_tag(post.image.url(:medium), class: "img"), post.image.url, rel: "_blank" ) %>
 <% end %>
-<%= check_box_tag "del_post[#{post.id}]", post.id %>
+<%= check_box_tag "del_post[]", post.id, false, id: "del_post_#{post.id}" %>
 <span class="title"><%= post.title %></span>
 名稱: <span class="name"><%= author_meta(post) %></span>&nbsp;
 [<%= post.created_at.strftime('%y/%m/%d %a %H:%M') %> ID:<%= post.identity_hash %>]&nbsp;
