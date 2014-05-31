@@ -1,11 +1,15 @@
+[<%= link_to "回到版面", stream_index_path %>]
+<table width='100%'><tr><th bgcolor=#e04000>
+<font color=#FFFFFF>回應模式</font>
+</th></tr></table>
 <%= render 'common/post_form', { post: @reply_form } %>
 
 <div id="contents">
-{$THREADFRONT}
+  <%= render 'common/thread_top' %>
 <%= form_tag post_path, method: :delete do %>
 
   <%= render 'thread', { thread: @thread, replies: @replies } %>
-  {$THREADREAR}
+  <%= render 'common/thread_bottom' %>
   <%= render 'common/del_form' %>
 
 <% end %>

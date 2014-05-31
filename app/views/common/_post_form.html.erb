@@ -28,6 +28,10 @@
       <td class="Form_bg"><b>刪除用密碼</b></td>
       <td><%= f.input :delete_password %><small>(刪除文章用。)</small></td>
     </tr>
+    <tr>
+      <td class="Form_bg"><b>驗證碼</b></td>
+      <td><%= recaptcha_tags %></td>
+    </tr>
     <%= f.input :parent_post_id, as: :hidden %>
     <tr>
       <td colspan="2">

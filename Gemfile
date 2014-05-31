@@ -35,7 +35,11 @@ gem "simple_form"
 # File Attachment
 gem "paperclip", "~> 4.1"
 
+# Hide sensitive info
 gem 'figaro'
+
+# Prevent bots
+gem "recaptcha", :require => "recaptcha/rails"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

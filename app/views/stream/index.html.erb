@@ -1,7 +1,7 @@
 <%= render 'common/post_form', { post: Post.new }%>
 
 <div id="contents">
-{$THREADFRONT}
+<%= render 'common/thread_top' %>
 <%= form_tag post_path, method: :delete do %>
 
 <div id="threads" class="autopagerize_page_element">
@@ -9,7 +9,8 @@
     <%= render 'thread', { thread: thread } %>
   <% end %>
 </div>
-  {$THREADREAR}
+
+  <%= render 'common/thread_bottom' %>
   <%= render 'common/del_form' %>
 
 <% end %>
