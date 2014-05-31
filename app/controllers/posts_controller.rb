@@ -10,9 +10,7 @@ class PostsController < ApplicationController
       @post = Post.new(post_params)
     end
 
-    @post.real_ip = request.env['REMOTE_ADDR']
-    @post.remote_ip = request.remote_ip
-    
+    @post.remote_ip = request.remote_ip    
     @post.save
 
     #id = @post.parent_post.nil? ? @post.id : @post.parent_post.id

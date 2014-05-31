@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 20140310102800) do
     t.string   "title"
     t.string   "author"
     t.string   "email"
-    t.string   "real_ip",                            null: false
     t.string   "remote_ip",                          null: false
     t.string   "identity_hash",                      null: false
     t.text     "message"

@@ -70,7 +70,7 @@ class Post < ActiveRecord::Base
   end
 
   def generate_id_hash
-    ip = self[:real_ip]
+    ip = self[:remote_ip]
     date = Time.current.to_date.to_s
     hash = Digest::SHA1.base64digest(ip + date + ID_SALT)
     

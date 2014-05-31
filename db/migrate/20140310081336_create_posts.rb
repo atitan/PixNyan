@@ -10,7 +10,6 @@ class CreatePosts < ActiveRecord::Migration
       t.string :email
 
       # author info
-      t.string :real_ip,        null: false
       t.string :remote_ip,      null: false
       t.string :identity_hash,  null: false
 
