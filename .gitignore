@@ -23,3 +23,6 @@
 
 # DB info
 /config/database.yml
+
+# OSX index
+.DS_Store

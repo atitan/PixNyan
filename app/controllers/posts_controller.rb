@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
 
-  def create
-    return redirect_to request.referer || stream_index_path unless verify_recaptcha
+  before_action :create_protection, only: :create
 
+  def create
     # check if parent post
     if @thread = Post.threads.find_by(id: params[:post][:parent_post_id])
       @post = @thread.replies.new(post_params)
@@ -10,7 +10,7 @@ class PostsController < ApplicationController
       @post = Post.new(post_params)
     end
 
-    @post.remote_ip = request.remote_ip    
+    @post.remote_ip = request.remote_ip
     @post.save
 
     #id = @post.parent_post.nil? ? @post.id : @post.parent_post.id
@@ -24,7 +24,7 @@ class PostsController < ApplicationController
 
       posts = Post.where(id: del_post).where(delete_password: passwd_hash)
       if params[:only_delete_img]
-        posts.each{ |post| post.image = nil && post.save }
+        posts.each{ |post| post.image.destroy && post.save }
       else
         posts.destroy_all
       end
@@ -34,6 +34,15 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def create_protection
+    return go_back unless verify_recaptcha
+    return flash[:warning] = "ip not allowed" && go_back unless filter_ip
+  end
+
+  def go_back
+    redirect_to request.referer || stream_index_path
+  end
 
   def post_params
     params.require(

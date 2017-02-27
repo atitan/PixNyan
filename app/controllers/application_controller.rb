@@ -6,4 +6,13 @@ class ApplicationController < ActionController::Base
   def not_found
     raise ActionController::RoutingError.new('Not Found')
   end
+
+  def filtered_ip
+    blocklist = IP_BLOCKLIST.map { |subnet| IPAddr.new subnet }
+    if blocklist.any? { |block| block.include?(request.remote_ip) }
+      return true
+    end
+    return false
+  end
+
 end
