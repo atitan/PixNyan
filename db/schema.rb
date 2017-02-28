@@ -14,19 +14,19 @@ ActiveRecord::Schema.define(version: 20140310102800) do
 
   create_table "posts", force: :cascade do |t|
     t.integer  "parent_post_id"
-    t.string   "title",              limit: 255
-    t.string   "author",             limit: 255
-    t.string   "email",              limit: 255
-    t.string   "remote_ip",          limit: 255,                 null: false
-    t.string   "identity_hash",      limit: 255,                 null: false
+    t.string   "title"
+    t.string   "author"
+    t.string   "email"
+    t.string   "remote_ip",                          null: false
+    t.string   "identity_hash",                      null: false
     t.text     "message"
-    t.string   "image_dimensions",   limit: 255
-    t.string   "delete_password",    limit: 255
-    t.boolean  "locked",                         default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "image_file_name",    limit: 255
-    t.string   "image_content_type", limit: 255
+    t.string   "image_dimensions"
+    t.string   "delete_password"
+    t.boolean  "locked",             default: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.index ["parent_post_id"], name: "index_posts_on_parent_post_id"
