@@ -48,10 +48,14 @@ group :doc do
 end
 
 group :test, :development do
-  gem 'web-console'
   gem 'sqlite3'
   gem "rspec", "~> 3.5.0"
   gem "rspec-rails", "~> 3.5.0"
+end
+
+group :test do
+  gem "codeclimate-test-reporter", require: nil
+  gem 'simplecov', require: false
 end
 
 group :production do

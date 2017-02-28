@@ -29,3 +29,6 @@
 
 # ENV file
 .env
+
+# test coverage report
+coverage/

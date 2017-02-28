@@ -1,8 +1,14 @@
 language: ruby
+sudo: false
+cache: bundler
 rvm:
-  - 2.1.1
-gemfile:
-  - Gemfile
-before_install:
-  - gem update --system
-  - gem --version
+  - 2.2.6
+  - 2.3.3
+  - 2.4.0
+before_script:
+  - bin/rake db:migrate RAILS_ENV=test
+addons:
+  code_climate:
+    repo_token: 8f8cddc2ab8754e0eafb0aac9a1fff603ddaeb2f9ac5553af5e6e1eb061b7c96
+after_success:
+  - bundle exec codeclimate-test-reporter
