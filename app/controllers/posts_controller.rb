@@ -10,7 +10,7 @@ class PostsController < ApplicationController
       @post = Post.new(post_params)
     end
 
-    @post.remote_ip = request.remote_ip
+    @post.remote_ip = request.ip
     @post.save
 
     #id = @post.parent_post.nil? ? @post.id : @post.parent_post.id
@@ -37,7 +37,7 @@ class PostsController < ApplicationController
 
   def create_protection
     return go_back unless verify_recaptcha
-    return flash[:warning] = "ip not allowed" && go_back unless filter_ip
+    return flash[:warning] = "IP not allowed" && go_back unless filter_ip
   end
 
   def go_back

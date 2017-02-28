@@ -26,3 +26,6 @@
 
 # OSX index
 .DS_Store
+
+# ENV file
+.env

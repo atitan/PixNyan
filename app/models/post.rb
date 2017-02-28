@@ -1,4 +1,4 @@
-class Post < ActiveRecord::Base
+class Post < ApplicationRecord
 
   # image Attachment
   has_attached_file :image, {
@@ -42,31 +42,41 @@ class Post < ActiveRecord::Base
   
   # getters
   def title
-    self[:title] || DEFAULT_POST_TITLE
+    default_text(__method__)
   end
 
   def author
-    self[:author] || DEFAULT_POST_AUTHOR
+    default_text(__method__)
   end
 
   def message
-    self[:message] || DEFAULT_POST_MESSAGE
+    default_text(__method__)
+  end
+
+  def default_text(column)
+    text = self[column.to_sym]
+    text ||= Rails.const_get("DEFAULT_POST_#{column.to_s.upcase}") if persisted?
+    text
   end
 
   # generating hash for password
   def delete_password=(passwd)
-    self[:delete_password] = if passwd.blank? then nil else Digest::SHA1.base64digest(passwd) end
+    self[:delete_password] = passwd.blank? ? nil : Digest::SHA1.base64digest(passwd)
   end
   
   protected
 
   def nullify_blank_value
-    NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
+    NULL_ATTRS.each do |attr|
+      self[attr] = nil if self[attr].blank?
+    end
   end
 
   def touch_parent
     # touch parent on create if sage presents in email field
-    parent_post.touch if parent_post && new_record? && "sage".casecmp(self[:email].to_s) != 0
+    if parent_post && new_record? && "sage".casecmp(self[:email].to_s) != 0
+      parent_post.touch
+    end
   end
 
   def generate_id_hash
@@ -82,8 +92,7 @@ class Post < ActiveRecord::Base
   end
 
   def content_presence
-    return false if message.blank? && image.blank?
-    return true
+    !(message.blank? && image.blank?)
   end
 
   def extract_image_dimensions

@@ -14,8 +14,8 @@ module ApplicationHelper
   end
 
   def postid_link(post)
-    id = "No." + post.id.to_s
-    qtag = "q" + post.id.to_s
+    id = "No.#{post.id}"
+    qtag = "q#{post.id}"
     thread = post.parent_post.nil? ? post : post.parent_post
 
     link_to id, thread_path(thread, anchor: qtag), class: "qlink"
