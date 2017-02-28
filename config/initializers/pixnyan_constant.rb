@@ -18,3 +18,6 @@ REPLY_PER_THREAD_PAGE = 3 # replies displayed in a thread page
 
 # ID salt
 ID_SALT = "some random text"
+
+# Blocked IP list
+IP_BLOCKLIST = ['8.8.0.0/16']

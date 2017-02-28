@@ -92,7 +92,9 @@ class Post < ApplicationRecord
   end
 
   def content_presence
-    !(message.blank? && image.blank?)
+    if message.blank? && image.blank?
+      errors.add(:message, 'Message and Image is empty')
+    end
   end
 
   def extract_image_dimensions
